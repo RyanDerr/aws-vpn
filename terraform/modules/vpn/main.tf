@@ -1,8 +1,14 @@
 locals {
-  tags = {
+  ec2_tags = {
     CreatedBy = "Terraform"
     AZ        = var.availability_zone
     Name      = var.ec2_instance_name
+  }
+
+  security_group_tags = {
+    CreatedBy = "Terraform"
+    AZ        = var.availability_zone
+    Name      = "VPN-SG"
   }
 }
 
@@ -32,17 +38,20 @@ resource "aws_instance" "aws_vpn" {
   availability_zone      = var.availability_zone
   vpc_security_group_ids = [aws_security_group.allowed_traffic.id]
   key_name               = aws_key_pair.generated_key.key_name
-  tags                   = local.tags
+  tags                   = local.ec2_tags
 
   provisioner "file" {
     source      = "${path.module}/scripts/vpn-setup.sh"
     destination = "/tmp/vpn-setup.sh"
   }
 
+
+
   provisioner "remote-exec" {
     inline = [
       "export PUBLIC_IP=${self.public_ip}",
       "export DEVICES=${var.devices}",
+      "export TIMEZONE=${data.external.local_timezone.result.timezone}",
       "chmod +x /tmp/vpn-setup.sh",
       "/tmp/vpn-setup.sh",
     ]
@@ -63,6 +72,7 @@ resource "aws_instance" "aws_vpn" {
 resource "aws_security_group" "allowed_traffic" {
   name        = "Allow SSH & Wireguard"
   description = "Allow SSH inbound traffic"
+  tags        = local.security_group_tags
 
   ingress {
     from_port   = 22

@@ -34,7 +34,7 @@ services:
         environment:
             - PUID=1000
             - PGID=1000
-            - TZ=America/Chicago
+            - TZ=${TIMEZONE}
             - SERVERURL=${PUBLIC_IP}
             - SERVERPORT=51820
             - PEERS=${DEVICES}
