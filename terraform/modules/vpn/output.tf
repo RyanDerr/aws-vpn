@@ -13,11 +13,6 @@ output "ec2_instance_public_ip" {
   value       = aws_instance.aws_vpn.public_ip
 }
 
-output "ec2_instance_private_ip" {
-  description = "The private IP address of the created EC2 instance"
-  value       = aws_instance.aws_vpn.private_ip
-}
-
 output "ec2_instance_key_name" {
   description = "The key name used to launch the EC2 instance"
   value       = aws_instance.aws_vpn.key_name
