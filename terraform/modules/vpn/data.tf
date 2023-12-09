@@ -18,3 +18,7 @@ data "aws_ami" "ubuntu" {
 
   owners = ["099720109477"] # Canonical
 }
+
+data "external" "local_timezone" {
+  program = ["bash", "-c", "echo '{\"timezone\": \"'$(cat /etc/timezone)'\"}'"]
+}
