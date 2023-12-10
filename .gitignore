@@ -41,4 +41,4 @@ terraform.rc
 *.conf
 
 # Ignore wireguard-config directory
-**/wireguard-config/*
+**/wireguard-configs/*
