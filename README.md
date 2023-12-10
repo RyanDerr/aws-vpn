@@ -31,21 +31,33 @@ To run this Terraform configuration, you will need to have the following prerequ
 Please ensure you have these prerequisites in place before running the Terraform configuration.
 
 ## Configuring the Terraform VPN Module
-The Terraform VPN module located in this repository has the following inputs:
 
-- `availability_zone` (optional): The AWS AZ where the VPN resources will be provisioned.
-    - If not provided the module will default to `us-east-1a`.
-- `ec2_instance_name` (optional): The name of the EC2 instance that will be provisioned.
-    - If not provided the module will default to `terraform-vpn`.
-- `instance_type` (optional): Defines the AWS EC2 instance type.
-    - If not provided the module will default to `t2.micro`.
-- `devices` (optional): List of comma separated devices to provide configs for AWS Wireguard VPN.
-- `local_filepath` (required): The local path to store output Wireguard configs and QR codes to connect.
-- `secret_key_name_location` (optional): The filepath to store and use the generated secret key used to connect to the EC2 instance.
-
+### Inputs
 To configure the Terraform VPN module, you need to provide values for these inputs in your Terraform configuration file.
 
-### Example Terraform VPN Module Usage
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| `local_filepath` | The local path to store output Wireguard configs and QR codes to connect | `string` | N/A | Yes |
+| `availability_zone` | The AWS AZ where the VPN resources will be provisioned | `string` | `us-east-1a` | No |
+| `ec2_instance_name` | The name of the EC2 instance that will be provisioned | `string` | `terraform-vpn` | No |
+| `instance_type` | Defines the AWS EC2 instance type | `string` | `t2.micro` | No |
+| `devices` | List of comma separated devices to provide configs for AWS Wireguard VPN | `string` | `vpn1` | No |
+| `secret_key_name_location` | The filepath to store the generated secret key for connecting to the EC2 instance | `string` | `~/ec2-private-key.pem` | No |
+
+### Outputs
+Defines the outputs that are returned from the module to the Terraform code referencing the module source.
+| Name | Description |
+|------|-------------|
+| `ec2_instance_id` | The ID of the created EC2 instance |
+| `ec2_instance_ami`| The AMI used to launch the EC2 instance |
+| `ec2_instance_public_ip` | The public IP address of the created EC2 instance |
+| `ec2_instance_key_name` | The key name used to launch the EC2 instance |
+| `ec2_instance_availability_zone` | The Availability Zone in which the EC2 instance was launched |
+| `ec2_instance_type` | The type of EC2 instance |
+| `ec2_instance_name` | The name of the EC2 instance |
+
+
+### Sample Terraform VPN Module Usage
 ```terraform
 module "aws_vpn" {
   source            = "../modules/vpn"
@@ -63,6 +75,7 @@ terraform init
 terraform apply
 ```
 ### Sample Output Wireguard Conf
+Sample output conf file used to connect to the EC2 instance with the Wireguard GUI.
 ```
 [Interface]
 PrivateKey = YOUR_PRIVATE_KEY
