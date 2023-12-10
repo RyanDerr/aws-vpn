@@ -45,8 +45,6 @@ resource "aws_instance" "aws_vpn" {
     destination = "/tmp/vpn-setup.sh"
   }
 
-
-
   provisioner "remote-exec" {
     inline = [
       "export PUBLIC_IP=${self.public_ip}",

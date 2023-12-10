@@ -35,7 +35,7 @@ variable "instance_type" {
 variable "devices" {
   description = "List of comma seperated devices to be used for the VPN"
   type        = string
-  default     = "sample1"
+  default     = "vpn1"
 
   validation {
     condition     = can(regex("^[a-zA-Z0-9]+(,[a-zA-Z0-9]+)*$", var.devices))
