@@ -31,36 +31,13 @@ To run this Terraform configuration, you will need to have the following prerequ
 Please ensure you have these prerequisites in place before running the Terraform configuration.
 
 ## Configuring the Terraform VPN Module
-
-### Inputs
-To configure the Terraform VPN module, you need to provide values for these inputs in your Terraform configuration file.
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| `local_filepath` | The local path to store output Wireguard configs and QR codes to connect | `string` | N/A | Yes |
-| `availability_zone` | The AWS AZ where the VPN resources will be provisioned | `string` | `us-east-1a` | No |
-| `ec2_instance_name` | The name of the EC2 instance that will be provisioned | `string` | `terraform-vpn` | No |
-| `instance_type` | Defines the AWS EC2 instance type | `string` | `t2.micro` | No |
-| `devices` | List of comma separated devices to provide configs for AWS Wireguard VPN | `string` | `vpn1` | No |
-| `secret_key_name_location` | The filepath to store the generated secret key for connecting to the EC2 instance | `string` | `~/ec2-private-key.pem` | No |
-
-### Outputs
-Defines the outputs that are returned from the module to the Terraform code referencing the module source.
-| Name | Description |
-|------|-------------|
-| `ec2_instance_id` | The ID of the created EC2 instance |
-| `ec2_instance_ami`| The AMI used to launch the EC2 instance |
-| `ec2_instance_public_ip` | The public IP address of the created EC2 instance |
-| `ec2_instance_key_name` | The key name used to launch the EC2 instance |
-| `ec2_instance_availability_zone` | The Availability Zone in which the EC2 instance was launched |
-| `ec2_instance_type` | The type of EC2 instance |
-| `ec2_instance_name` | The name of the EC2 instance |
-
+As of `v0.2.0` we have moved the module to its own Terraform repository. For the full list of supported inputs, outputs, and module reference samples you can view the info found in either the official [Terraform ec2-wireguard-vpn Page](https://registry.terraform.io/modules/RyanDerr/ec2-wireguard-vpn/aws/latest) or the [Github Repo](https://github.com/RyanDerr/terraform-aws-ec2-wireguard-vpn).
 
 ### Sample Terraform VPN Module Usage
-```terraform
-module "aws_vpn" {
-  source            = "../modules/vpn"
+```hcl
+module "ec2-wireguard-vpn" {
+  source  = "RyanDerr/ec2-wireguard-vpn/aws"
+  version = "0.1.0"
   ec2_instance_name = "sample-vpn"
   availability_zone = "eu-west-3a"
   local_filepath    = "../../wireguard-configs"
